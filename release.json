@@ -1,0 +1,7 @@
+{
+  "namespace/BlockName": {
+    "Language": "Python",
+    "Reference": "github.com/nio-blocks/greengrass@v1.0.0",
+    "Version": "1.0.0"
+  }
+}
