@@ -1,6 +1,6 @@
 from nio.block.base import Block
 from nio.properties import VersionProperty, StringProperty, Property
-from aws_greengrass_core_sdk.sdk import greengrasssdk
+from .aws_greengrass_core_sdk.sdk import greengrasssdk
 
 
 class GreenGrassLambda(Block):
@@ -24,8 +24,6 @@ class GreenGrassLambda(Block):
         self.client = greengrasssdk.client('lambda')
 
         # check that payload is json format
-
-
         super().configure()
 
     def process_signals(self, signals):
@@ -36,7 +34,5 @@ class GreenGrassLambda(Block):
                 ClientContext=self.client_context(),
                 Payload=self.payload(),
                 Qualifier=self.client_context())
-
-            
 
         self.notify_signals(signals)
