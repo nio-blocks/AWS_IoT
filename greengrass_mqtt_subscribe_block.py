@@ -1,7 +1,7 @@
 from nio.properties import VersionProperty, StringProperty
 from nio.util.discovery import discoverable
 from nio.signal.base import Signal
-from .greengrass_mqtt_base_block import GreenGrassMQTTBase
+from greengrass_mqtt_base_block import GreenGrassMQTTBase
 
 
 @discoverable
@@ -20,5 +20,10 @@ class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
         self.client.unsubscribe(self.topic())
         super().stop()
 
-    def handle_message(self, message):
-        self.notify_signals([Signal({})])
+    def handle_message(self, client, userdata, message):
+        self.logger.debug("Received message from client '{}' on topic '{}'. "
+                          "{}".format(client, message.topic, message.payload))
+        self.notify_signals([Signal({"client": client,
+                                     "userdata": userdata,
+                                     "payload": message.payload,
+                                     "topic": message.topic})])

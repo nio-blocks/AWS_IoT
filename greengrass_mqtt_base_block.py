@@ -1,4 +1,4 @@
-from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient, AWSIoTMQTTShadowClient
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
 from nio.block.base import Block
 from nio.properties import (VersionProperty, StringProperty, PropertyHolder,
@@ -19,24 +19,27 @@ class GreenGrassMQTTBase(Block):
 
     version = VersionProperty('1.0.0')
     creds = ObjectProperty(AuthCreds, title="AWS Credentials", default=AuthCreds())
-    certificate = FileProperty(title="IoT Root CA Location",
-                               default="/etc/root_ca.pem")
+    certificate_location = FileProperty(title="IoT Root CA Location",
+                                        default="/etc/root_ca.pem")
     client_id = StringProperty(title="Client ID", default="")
-    use_websocket = BoolProperty(title="Use Websockets", default=True,
+    use_websocket = BoolProperty(title="Use Websockets", default=False,
                                  visible=False)
     connect_timeout = IntProperty(title="Connect/Disconnect Timeout",
                                   default=60)
+    mqtt_host = StringProperty(title="MQTT Host", default="127.0.0.1")
+    mqtt_port = IntProperty(title="MQTT Port", default=8883)
 
     def __init__(self):
-        self.client = None
+        self.client = AWSIoTMQTTClient
         super().__init__()
 
     def configure(self):
         """set up MQTT client properties"""
-        self.client = AWSIoTMQTTClient(self.client_id(),
-                                       useWebsocket=self.use_websocket())
-        self.client.configureOfflinePublishQueueing(-1)
+        self.client(self.client_id(), useWebsocket=self.use_websocket())
+        self.client.configureEndpoint(self.mqtt_host(), self.mqtt_port())
+        self.client.configureOfflinePublishQueueing(queueSize=-1)
         self.client.configureConnectDisconnectTimeout(self.connect_timeout())
+        self.client.configureCredentials(self.certificate_location())
 
         self.connect()
         super().configure()
