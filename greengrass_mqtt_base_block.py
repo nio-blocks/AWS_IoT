@@ -19,8 +19,12 @@ class GreenGrassMQTTBase(Block):
 
     version = VersionProperty('1.0.0')
     creds = ObjectProperty(AuthCreds, title="AWS Credentials", default=AuthCreds())
-    certificate_location = FileProperty(title="IoT Root CA Location",
-                                        default="/etc/root_ca.pem")
+    root_ca_path = FileProperty(title="IoT Root CA Location",
+                                default="/etc/root_ca.pem")
+    cert_path = FileProperty(title="Certificate Path",
+                             default="/etc/cert.pem")
+    private_key_path = FileProperty(title="Private Key Path",
+                                    default="/etc/private_key.pem")
     client_id = StringProperty(title="Client ID", default="")
     use_websocket = BoolProperty(title="Use Websockets", default=False,
                                  visible=False)
@@ -39,8 +43,9 @@ class GreenGrassMQTTBase(Block):
         self.client.configureEndpoint(self.mqtt_host(), self.mqtt_port())
         self.client.configureOfflinePublishQueueing(queueSize=-1)
         self.client.configureConnectDisconnectTimeout(self.connect_timeout())
-        self.client.configureCredentials(self.certificate_location())
-
+        self.client.configureCredentials(CAFilePath=self.root_ca_path(),
+                                         KeyPath=self.private_key_path(),
+                                         CertificatePath=self.cert_path())
         self.connect()
         super().configure()
 
