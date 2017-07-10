@@ -1,4 +1,4 @@
-from nio.properties import VersionProperty
+from nio.properties import VersionProperty, StringProperty
 from nio.util.discovery import discoverable
 from .greengrass_mqtt_base_block import GreenGrassMQTTBase
 
@@ -9,6 +9,8 @@ class GreenGrassMQTTPublish(GreenGrassMQTTBase):
     This block will publish messages to a topic."""
 
     version = VersionProperty('1.0.0')
+    topic = StringProperty(title="Topic", allow_none=False)
 
     def process_signals(self, signals):
-        self.client.publish()
+        for signal in signals:
+            self.client.publish(self.topic(), signal, 0)

@@ -43,11 +43,7 @@ class GreenGrassMQTTBase(Block):
 
     def stop(self):
         self.disconnect()
-
-    def process_signals(self, signals):
-        for signal in signals:
-            pass
-        self.notify_signals(signals)
+        super().stop()
 
     def connect(self):
         self.client.connect()
