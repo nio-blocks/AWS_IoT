@@ -13,7 +13,7 @@ class AuthCreds(PropertyHolder):
 
 
 @not_discoverable
-class GreenGrassBase(Block):
+class GreenGrassMQTTBase(Block):
     """The base block for Greengrass. This block is responsible for connecting
     to the local greengrass core via MQTT."""
 
@@ -32,14 +32,25 @@ class GreenGrassBase(Block):
         super().__init__()
 
     def configure(self):
+        """set up MQTT client properties"""
         self.client = AWSIoTMQTTClient(self.client_id(),
                                        useWebsocket=self.use_websocket())
         self.client.configureOfflinePublishQueueing(-1)
         self.client.configureConnectDisconnectTimeout(self.connect_timeout())
-        # check that payload is json format
+
+        self.connect()
         super().configure()
+
+    def stop(self):
+        self.disconnect()
 
     def process_signals(self, signals):
         for signal in signals:
             pass
         self.notify_signals(signals)
+
+    def connect(self):
+        self.client.connect()
+
+    def disconnect(self):
+        self.client.disconnect()
