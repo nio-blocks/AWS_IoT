@@ -17,7 +17,7 @@ class GreenGrassMQTTBase(Block):
     """The base block for Greengrass. This block is responsible for connecting
     to the local greengrass core via MQTT."""
 
-    version = VersionProperty('0.1.0')
+    version = VersionProperty('1.0.0')
     creds = ObjectProperty(AuthCreds, title="AWS Credentials", default=AuthCreds())
     certificate = FileProperty(title="IoT Root CA Location",
                                default="/etc/root_ca.pem")
