@@ -13,4 +13,6 @@ class GreenGrassMQTTPublish(GreenGrassMQTTBase):
 
     def process_signals(self, signals):
         for signal in signals:
-            self.client.publish(self.topic(), signal, 0)
+            self.logger.debug("Publishing signal to topic '{}': {}"
+                              .format(self.topic(), signal.to_dict()))
+            self.client.publish(self.topic(), signal.to_dict(), 0)
