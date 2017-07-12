@@ -1,6 +1,6 @@
 from nio.properties import VersionProperty, StringProperty
 from nio.util.discovery import discoverable
-from greengrass_mqtt_base_block import GreenGrassMQTTBase
+from .greengrass_mqtt_base_block import GreenGrassMQTTBase
 
 
 @discoverable

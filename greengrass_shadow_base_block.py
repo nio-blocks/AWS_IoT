@@ -2,7 +2,7 @@ from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
 
 from nio.util.discovery import not_discoverable
 
-from greengrass_mqtt_base_block import GreenGrassMQTTBase
+from .greengrass_mqtt_base_block import GreenGrassMQTTBase
 
 
 @not_discoverable
