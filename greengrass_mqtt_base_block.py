@@ -37,7 +37,7 @@ class GreenGrassMQTTBase(Block):
         self.client = AWSIoTMQTTClient
         super().__init__()
 
-    def configure(self):
+    def configure(self, context):
         """set up MQTT client properties"""
         self.client(self.client_id(), useWebsocket=self.use_websocket())
         self.client.configureEndpoint(self.mqtt_host(), self.mqtt_port())
@@ -47,7 +47,7 @@ class GreenGrassMQTTBase(Block):
                                          KeyPath=self.private_key_path(),
                                          CertificatePath=self.cert_path())
         self.connect()
-        super().configure()
+        super().configure(context)
 
     def stop(self):
         self.disconnect()
