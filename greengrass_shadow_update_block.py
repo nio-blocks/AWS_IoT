@@ -1,9 +1,8 @@
 import json
 
-from nio.util.discovery import discoverable
-from nio.properties import (VersionProperty, StringProperty, BoolProperty,
-                            Property)
+from nio.properties import VersionProperty, Property
 from nio.signal.base import Signal
+from nio.util.discovery import discoverable
 
 from .greengrass_shadow_base_block import GreenGrassMQTTShadowBase
 
@@ -12,24 +11,10 @@ from .greengrass_shadow_base_block import GreenGrassMQTTShadowBase
 class GreenGrassShadowUpdate(GreenGrassMQTTShadowBase):
     """Update device shadows on the local MQTT system"""
 
-    version = VersionProperty('1.0.0')
-    thing_name = StringProperty(title="Thing name", default="",
-                                allow_none=False)
-    persistent_subscribe = BoolProperty(title="Persistent Subscription",
-                                        default=True)
+    version = VersionProperty('0.1.0')
     data_to_update = Property(title="Data to update",
                               default="{{ $.to_dict() }}",
                               allow_none=False)
-
-    def __init__(self):
-        super().__init__()
-        self.shadow_handler = None
-
-    def configure(self, context):
-        super().configure(context)
-        self.shadow_handler = self.client.createShadowHandlerWithName(
-            self.thing_name(),
-            isPersistentSubscribe=self.persistent_subscribe())
 
     def _update_callback(self, payload, responseStatus, token):
         if responseStatus == "timeout":

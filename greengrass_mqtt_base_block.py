@@ -34,15 +34,14 @@ class GreenGrassMQTTBase(Block):
     mqtt_port = IntProperty(title="MQTT Port", default=8883)
 
     def __init__(self):
-        self.client = None
+        self.client = AWSIoTMQTTClient
         super().__init__()
 
     def configure(self, context):
         """set up MQTT client properties"""
         super().configure(context)
 
-        self.client = AWSIoTMQTTClient(self.client_id(),
-                                       useWebsocket=self.use_websocket())
+        self.client(self.client_id(), useWebsocket=self.use_websocket())
         self.client.configureEndpoint(hostName=self.mqtt_host(),
                                       portNumber=self.mqtt_port())
 
