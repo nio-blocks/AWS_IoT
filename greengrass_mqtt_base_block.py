@@ -41,7 +41,8 @@ class GreenGrassMQTTBase(Block):
         """set up MQTT client properties"""
         super().configure(context)
 
-        self.client(self.client_id(), useWebsocket=self.use_websocket())
+        self.client = self.client(self.client_id(),
+                                  useWebsocket=self.use_websocket())
         self.client.configureEndpoint(hostName=self.mqtt_host(),
                                       portNumber=self.mqtt_port())
 
