@@ -10,7 +10,7 @@ class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
     This block will grab messages from a certain topic and notify them."""
 
     version = VersionProperty('1.0.0')
-    topic = StringProperty(title="Topic", allow_none=True)
+    topic = StringProperty(title="Topic", allow_none=False)
 
     def configure(self, context):
         super().configure(context)
