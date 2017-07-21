@@ -56,3 +56,72 @@ Any list of signals.
 Output
 ---------
 Same list of signals as input, but published to MQTT.
+
+
+GreengrassShadowDelete
+======================
+Delete a property from a devices shadow.
+
+Properties
+--------------
+Same as GreengrassSubscribe, with the following additional properties:
+- **data_to_delete**(expression): A dictionary structure that defines
+the property on the shadow you wish to delete.
+- **thing_name**(string): The thing ARN of the device you which to change
+- **persistent_subscribe**(boolean): whether to persistently subscribe to the device in question
+
+Commands
+----------------
+None
+
+Input
+-------
+Any list of signals.
+
+Output
+---------
+Results of the shadow deletions.
+
+
+GreengrassShadowUpdate
+======================
+Update a property of a devices shadow.
+
+Properties
+--------------
+Same as GreengrassShadowDelete, replacing data_to_delete with:
+- **data_to_update**(expression): A dictionary structure that defines the property
+on the shadow you wish to update
+
+Commands
+----------------
+None
+
+Input
+-------
+Any list of signals.
+
+Output
+---------
+Results of the shadow updates.
+
+
+GreengrassShadowDeltaListener
+=============================
+Listens to a device shadow for deltas/changes.
+
+Properties
+--------------
+Same as GreengrassShadowDelete, minus the data_to_delete property.
+
+Commands
+----------------
+None
+
+Input
+-------
+Any list of signals.
+
+Output
+---------
+Any deltas to the given device's shadow.
