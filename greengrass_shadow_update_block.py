@@ -30,6 +30,7 @@ class GreenGrassShadowUpdate(GreenGrassMQTTShadowBase):
         new_signals = []
         for signal in signals:
             result = self.shadow_handler.shadowUpdate(self.data_to_update(signal),
-                                                      self._update_callback, 5)
+                                                      self._update_callback,
+                                                      srcTimeout=5)
             new_signals.append(Signal(result))
         self.notify_signals(new_signals)
