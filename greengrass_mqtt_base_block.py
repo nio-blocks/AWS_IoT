@@ -8,8 +8,8 @@ from nio.util.discovery import not_discoverable
 
 
 class AuthCreds(PropertyHolder):
-    username = StringProperty(title="Access Key ID", default="", allow_none=True)
-    password = StringProperty(title="Secret Key", default="", allow_none=True)
+    access_key_id = StringProperty(title="Access Key ID", default="", allow_none=True)
+    secret_key = StringProperty(title="Secret Key", default="", allow_none=True)
 
 
 @not_discoverable
@@ -20,16 +20,16 @@ class GreenGrassMQTTBase(Block):
     version = VersionProperty('1.0.0')
     creds = ObjectProperty(AuthCreds, title="AWS Credentials", default=AuthCreds())
     root_ca_path = FileProperty(title="IoT Root CA Location",
-                                default="/etc/root_ca.pem")
+                                default="[[PROJECT_ROOT]]/etc/root_ca.pem")
     cert_path = FileProperty(title="Certificate Path",
-                             default="/etc/cert.pem")
+                             default="[[PROJECT_ROOT]]/etc/cert.pem")
     private_key_path = FileProperty(title="Private Key Path",
-                                    default="/etc/private_key.pem")
-    client_id = StringProperty(title="Client ID", default="")
+                                    default="[[PROJECT_ROOT]]/etc/private_key.pem")
+    client_id = StringProperty(title="Client ID", default="", allow_none=False)
     use_websocket = BoolProperty(title="Use Websockets", default=False,
                                  visible=False)
     connect_timeout = IntProperty(title="Connect/Disconnect Timeout",
-                                  default=60)
+                                  default=10)
     mqtt_host = StringProperty(title="MQTT Host", default="127.0.0.1")
     mqtt_port = IntProperty(title="MQTT Port", default=8883)
 
@@ -39,22 +39,43 @@ class GreenGrassMQTTBase(Block):
 
     def configure(self, context):
         """set up MQTT client properties"""
-        self.client(self.client_id(), useWebsocket=self.use_websocket())
-        self.client.configureEndpoint(self.mqtt_host(), self.mqtt_port())
+        super().configure(context)
+
+        self.client = self.client(self.client_id(),
+                                  useWebsocket=self.use_websocket())
+        self.client.configureEndpoint(hostName=self.mqtt_host(),
+                                      portNumber=self.mqtt_port())
+
+        if self.use_websocket():
+            # only need to configure the root CA and IAM credentials for
+            # websockets
+            self.client.configureIAMCredentials(self.creds().access_key_id(),
+                                                self.creds().secret_key())
+            self.client.configureCredentials(
+                CAFilePath=self.root_ca_path().file)
+        else:
+            # don't need to configure IAM credentials for non-websocket use
+            self.client.configureCredentials(
+                CAFilePath=self.root_ca_path().file,
+                KeyPath=self.private_key_path().file,
+                CertificatePath=self.cert_path().file)
+
         self.client.configureOfflinePublishQueueing(queueSize=-1)
         self.client.configureConnectDisconnectTimeout(self.connect_timeout())
-        self.client.configureCredentials(CAFilePath=self.root_ca_path(),
-                                         KeyPath=self.private_key_path(),
-                                         CertificatePath=self.cert_path())
+        self.client.configureDrainingFrequency(2)
+        self.client.configureMQTTOperationTimeout(5)
+        self.client.configureAutoReconnectBackoffTime(1, 32, 20)
+
         self.connect()
-        super().configure(context)
 
     def stop(self):
         self.disconnect()
         super().stop()
 
     def connect(self):
+        self.logger.debug("Connecting...")
         self.client.connect()
 
     def disconnect(self):
+        self.logger.debug("Disconnecting...")
         self.client.disconnect()
