@@ -13,6 +13,7 @@ class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
     topic = StringProperty(title="Topic", allow_none=False)
 
     def start(self):
+        super().start()
         response = self.client.subscribe(topic=self.topic(),
                                          QoS=0,
                                          callback=self._handle_message)
@@ -22,7 +23,6 @@ class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
         else:
             self.logger.error("Could not subscribe to topic `{}`, success: "
                               "{}".format(self.topic(), response))
-        super().start()
 
     def stop(self):
         response = self.client.unsubscribe(self.topic())
