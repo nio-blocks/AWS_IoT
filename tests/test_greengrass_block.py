@@ -41,13 +41,13 @@ class TestMQTTSubscribe(NIOBlockTestCase):
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {"topic": "testtopic"})
             blk.start()
-            blk.handle_message(client="", userdata="",
+            blk._handle_message(client="", userdata="",
                                message=Message(payload="test message"))
             blk.stop()
             patched_client.return_value.subscribe.assert_called_with(
                 topic=blk.topic(),
                 QoS=0,
-                callback=blk.handle_message
+                callback=blk._handle_message
             )
             patched_client.return_value.unsubscribe.assert_called_with(
                 blk.topic()

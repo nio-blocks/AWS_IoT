@@ -16,7 +16,7 @@ class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
         super().configure(context)
         response = self.client.subscribe(topic=self.topic(),
                                          QoS=0,
-                                         callback=self.handle_message)
+                                         callback=self._handle_message)
         if response:
             self.logger.info("Subscribed to topic `{}`, success: {}"
                              .format(self.topic(), response))
@@ -34,7 +34,7 @@ class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
                               "{}".format(self.topic(), response))
         super().stop()
 
-    def handle_message(self, client, userdata, message):
+    def _handle_message(self, client, userdata, message):
         self.logger.debug("Received message from client '{}' on topic '{}': "
                           "{}".format(client, message.topic, message.payload))
         self.notify_signals([Signal({"client": client,
