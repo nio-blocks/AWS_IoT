@@ -14,10 +14,15 @@ class GreenGrassMQTTPublish(GreenGrassMQTTBase):
 
     def process_signals(self, signals):
         for signal in signals:
+            data = self.data_to_publish(signal)
+            if isinstance(data, bytes):
+                # cannot publish bytestring, convert to string
+                data = data.decode()
+
             self.logger.debug("Publishing signal to topic '{}': {}"
-                              .format(self.topic(),
-                                      self.data_to_publish(signal)))
+                              .format(self.topic(), data))
+
             response = self.client.publish(topic=self.topic(),
-                                           payload=self.data_to_publish(signal),
+                                           payload=data,
                                            QoS=0)
             self.logger.debug("Got response {0}, success: {0}".format(response))

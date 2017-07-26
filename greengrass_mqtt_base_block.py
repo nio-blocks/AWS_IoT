@@ -29,7 +29,8 @@ class GreenGrassMQTTBase(Block):
     private_key_path = FileProperty(
         title="Private Key Path",
         default="[[PROJECT_ROOT]]/etc/private_key.pem")
-    client_id = StringProperty(title="Client ID", default="", allow_none=False)
+    client_id = StringProperty(title="Client ID", default="nio",
+                               allow_none=False)
     use_websocket = BoolProperty(title="Use Websockets", default=False,
                                  visible=False)
     connect_timeout = IntProperty(title="Connect/Disconnect Timeout",
