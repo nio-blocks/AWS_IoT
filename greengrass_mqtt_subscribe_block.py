@@ -12,18 +12,30 @@ class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
     version = VersionProperty('1.0.0')
     topic = StringProperty(title="Topic", allow_none=False)
 
-    def configure(self, context):
-        super().configure(context)
-        self.client.subscribe(topic=self.topic(),
-                              QoS=0,
-                              callback=self.handle_message)
+    def start(self):
+        super().start()
+        response = self.client.subscribe(topic=self.topic(),
+                                         QoS=0,
+                                         callback=self._handle_message)
+        if response:
+            self.logger.info("Subscribed to topic `{}`, success: {}"
+                             .format(self.topic(), response))
+        else:
+            self.logger.error("Could not subscribe to topic `{}`, success: "
+                              "{}".format(self.topic(), response))
 
     def stop(self):
-        self.client.unsubscribe(self.topic())
+        response = self.client.unsubscribe(self.topic())
+        if response:
+            self.logger.info("Unsubscribed from topic `{}`"
+                             .format(self.topic()))
+        else:
+            self.logger.error("Could not unsubscribe from topic `{}`, returned "
+                              "{}".format(self.topic(), response))
         super().stop()
 
-    def handle_message(self, client, userdata, message):
-        self.logger.debug("Received message from client '{}' on topic '{}'. "
+    def _handle_message(self, client, userdata, message):
+        self.logger.debug("Received message from client '{}' on topic '{}': "
                           "{}".format(client, message.topic, message.payload))
         self.notify_signals([Signal({"client": client,
                                      "userdata": userdata,
