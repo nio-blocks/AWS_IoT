@@ -8,8 +8,10 @@ from nio.util.discovery import not_discoverable
 
 
 class AuthCreds(PropertyHolder):
-    access_key_id = StringProperty(title="Access Key ID", default="", allow_none=True)
-    secret_key = StringProperty(title="Secret Key", default="", allow_none=True)
+    access_key_id = StringProperty(title="Access Key ID", default="",
+                                   allow_none=True)
+    secret_key = StringProperty(title="Secret Key", default="",
+                                allow_none=True)
 
 
 @not_discoverable
@@ -18,13 +20,15 @@ class GreenGrassMQTTBase(Block):
     to the local greengrass core via MQTT."""
 
     version = VersionProperty('1.0.0')
-    creds = ObjectProperty(AuthCreds, title="AWS Credentials", default=AuthCreds())
+    creds = ObjectProperty(AuthCreds, title="AWS Credentials",
+                           default=AuthCreds())
     root_ca_path = FileProperty(title="IoT Root CA Location",
                                 default="[[PROJECT_ROOT]]/etc/root_ca.pem")
     cert_path = FileProperty(title="Certificate Path",
                              default="[[PROJECT_ROOT]]/etc/cert.pem")
-    private_key_path = FileProperty(title="Private Key Path",
-                                    default="[[PROJECT_ROOT]]/etc/private_key.pem")
+    private_key_path = FileProperty(
+        title="Private Key Path",
+        default="[[PROJECT_ROOT]]/etc/private_key.pem")
     client_id = StringProperty(title="Client ID", default="", allow_none=False)
     use_websocket = BoolProperty(title="Use Websockets", default=False,
                                  visible=False)
