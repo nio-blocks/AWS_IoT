@@ -29,8 +29,10 @@ class GreenGrassShadowDelete(GreenGrassMQTTShadowBase):
     def process_signals(self, signals):
         new_signals = []
         for signal in signals:
-            result = self.shadow_handler.shadowDelete(self.data_to_update(signal),
-                                                      self._delete_callback,
-                                                      srcTimeout=5)
+            result = self.shadow_handler.shadowDelete(
+                self.data_to_delete(signal),
+                self._delete_callback,
+                srcTimeout=5
+            )
             new_signals.append(Signal(result))
         self.notify_signals(new_signals)

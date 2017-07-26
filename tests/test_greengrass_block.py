@@ -29,7 +29,7 @@ class TestMQTTBase(NIOBlockTestCase):
 
 class TestMQTTSubscribe(NIOBlockTestCase):
 
-    def test_process_signals(self):
+    def test_subscribe(self):
         """Signals pass through block unmodified."""
         blk = GreenGrassMQTTSubscribe()
 
@@ -89,6 +89,9 @@ class TestMQTTShadowBase(NIOBlockTestCase):
             self.configure_block(blk, {})
             blk.start()
             blk.stop()
+            patched_client.return_value.createShadowHandlerWithName.\
+                assert_called_with(blk.thing_name(),
+                                   isPersistentSubscribe=blk.persistent_subscribe())
         self.assert_num_signals_notified(0)
 
 
@@ -100,8 +103,23 @@ class TestMQTTShadowUpdate(NIOBlockTestCase):
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {})
             blk.start()
+            patched_client.return_value.createShadowHandlerWithName.\
+                return_value.shadowUpdate.return_value = {
+                "response": "success"
+            }
+            blk.process_signals([Signal({"test": 1})])
             blk.stop()
-        self.assert_num_signals_notified(0)
+            patched_client.return_value.createShadowHandlerWithName. \
+                return_value.shadowUpdate.assert_called_with(
+                    blk.data_to_update(Signal({"test": 1})),
+                    blk._update_callback,
+                    srcTimeout=5
+            )
+
+        self.assert_num_signals_notified(1)
+        self.assertDictEqual(
+            self.last_notified[DEFAULT_TERMINAL][0].to_dict(),
+            {"response": "success"})
 
 
 class TestMQTTShadowDelete(NIOBlockTestCase):
@@ -112,17 +130,49 @@ class TestMQTTShadowDelete(NIOBlockTestCase):
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {})
             blk.start()
+            patched_client.return_value.createShadowHandlerWithName.\
+                return_value.shadowDelete.return_value = {
+                "response": "success"
+            }
+            blk.process_signals([Signal({"test": 1})])
             blk.stop()
-        self.assert_num_signals_notified(0)
+            patched_client.return_value.createShadowHandlerWithName. \
+                return_value.shadowDelete.assert_called_with(
+                    blk.data_to_delete(Signal({"test": 1})),
+                    blk._delete_callback,
+                    srcTimeout=5
+            )
+
+        self.assert_num_signals_notified(1)
+        self.assertDictEqual(
+            self.last_notified[DEFAULT_TERMINAL][0].to_dict(),
+            {"response": "success"})
 
 
 class TestMQTTShadowDeltaListener(NIOBlockTestCase):
 
     def test_process_signals(self):
         """Signals pass through block unmodified."""
+        import json
         blk = GreenGrassShadowDeltaListener()
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {})
             blk.start()
+            blk._delta_callback(
+                payload=json.dumps({"state": {"property": "test_property"},
+                                    "version": 1}),
+                responseStatus=200,
+                token="")
             blk.stop()
-        self.assert_num_signals_notified(0)
+            patched_client.return_value.createShadowHandlerWithName. \
+                return_value.shadowRegisterDeltaCallback.assert_called_with(
+                blk._delta_callback
+            )
+            patched_client.return_value.createShadowHandlerWithName. \
+                return_value.shadowUnregisterDeltaCallback.assert_called_with(
+                blk._delta_callback
+            )
+        self.assert_num_signals_notified(1)
+        self.assertDictEqual(
+            self.last_notified[DEFAULT_TERMINAL][0].to_dict(),
+            {'state': {'property': 'test_property'}, 'version': 1})
