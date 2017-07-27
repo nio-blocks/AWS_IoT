@@ -1,4 +1,5 @@
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
+from copy import deepcopy
 
 from nio.util.discovery import not_discoverable
 from nio.properties import StringProperty, BoolProperty
@@ -19,7 +20,7 @@ class GreenGrassMQTTShadowBase(GreenGrassMQTTBase):
 
     def __init__(self):
         super().__init__()
-        self.client = AWSIoTMQTTShadowClient
+        self.client = deepcopy(AWSIoTMQTTShadowClient)
         self.shadow_handler = None
 
     def configure(self, context):

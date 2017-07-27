@@ -1,4 +1,6 @@
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
+from uuid import uuid4
+from copy import deepcopy
 
 from nio.block.base import Block
 from nio.properties import (VersionProperty, StringProperty, PropertyHolder,
@@ -29,8 +31,6 @@ class GreenGrassMQTTBase(Block):
     private_key_path = FileProperty(
         title="Private Key Path",
         default="[[PROJECT_ROOT]]/etc/private_key.pem")
-    client_id = StringProperty(title="Client ID", default="nio",
-                               allow_none=False)
     use_websocket = BoolProperty(title="Use Websockets", default=False,
                                  visible=False)
     connect_timeout = IntProperty(title="Connect/Disconnect Timeout",
@@ -39,14 +39,14 @@ class GreenGrassMQTTBase(Block):
     mqtt_port = IntProperty(title="MQTT Port", default=8883)
 
     def __init__(self):
-        self.client = AWSIoTMQTTClient
+        self.client = deepcopy(AWSIoTMQTTClient)
         super().__init__()
 
     def configure(self, context):
         """set up MQTT client properties"""
         super().configure(context)
 
-        self.client = self.client(self.client_id(),
+        self.client = self.client(str(uuid4()),
                                   useWebsocket=self.use_websocket())
         self.client.configureEndpoint(hostName=self.mqtt_host(),
                                       portNumber=self.mqtt_port())
