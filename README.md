@@ -1,6 +1,17 @@
-GreengrassBase
-==============
-Blocks to interact with a local greengrass core.
+Current state: this block is still a WIP. Further research into greengrass
+or further development of the greengrass platform is needed. In the current
+state, the subscribe block and the publish block work when pointed to
+the AWS IoT cloud MQTT broker, but no connection can be established/authenticated
+for the local broker running on the greengrass core.
+
+Instructions for setting up greengrass can be found [here.](http://docs.aws.amazon.com/greengrass/latest/developerguide/what-is-gg.html)
+And a blog post about using lambda with it can be found [here.](https://aws.amazon.com/blogs/aws/aws-greengrass-run-aws-lambda-functions-on-connected-devices/)
+
+
+Greengrass
+==========
+
+Blocks to interact with a greengrass core.
 
 Dependencies
 ----------------
