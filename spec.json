@@ -1,29 +1,261 @@
 {
-  "namespace/GreenGrass": {
-    "Version": "1.0.0",
-    "Description": "Description of the block.",
-    "Output": "Description of block output(s).",
-    "Input": "Description of block input(s).",
-    "Dependencies": [
-      "<List of required dependencies.>"
-    ],
-    "Commands": {
-      "<command1>": {
-        "description": "Required description of the command",
-        "type": "Optional type and other metadata with any key."
+  "nio/GreenGrassMQTTPublish": {
+    "Commands": {},
+    "Dependencies": [],
+    "Description": "",
+    "Input": "",
+    "Output": "",
+    "Properties": {
+      "AWS Credentials": {
+        "default": {
+          "access_key_id": "",
+          "secret_key": ""
+        },
+        "description": ""
       },
-      "<command2>": {
-        "description": "Required description of the command"
+      "Certificate Path": {
+        "default": "[[PROJECT_ROOT]]/etc/cert.pem",
+        "description": ""
+      },
+      "Connect/Disconnect Timeout": {
+        "default": 10,
+        "description": ""
+      },
+      "Data to Publish": {
+        "default": "{{ $text }}",
+        "description": ""
+      },
+      "IoT Root CA Location": {
+        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem",
+        "description": ""
+      },
+      "MQTT Host": {
+        "default": "127.0.0.1",
+        "description": ""
+      },
+      "MQTT Port": {
+        "default": 8883,
+        "description": ""
+      },
+      "Private Key Path": {
+        "default": "[[PROJECT_ROOT]]/etc/private_key.pem",
+        "description": ""
+      },
+      "Topic": {
+        "description": ""
+      },
+      "Use Websockets": {
+        "description": ""
       }
     },
+    "Version": "1.0.0"
+  },
+  "nio/GreenGrassMQTTSubscribe": {
+    "Commands": {},
+    "Dependencies": [],
+    "Description": "",
+    "Input": "",
+    "Output": "",
     "Properties": {
-      "<property1>": {
-        "description": "Required description of the property"
+      "AWS Credentials": {
+        "default": {
+          "access_key_id": "",
+          "secret_key": ""
+        },
+        "description": ""
       },
-      "<property2>": {
-        "default": "Optional metadata with any key.",
-        "description": "Required description of the property"
+      "Certificate Path": {
+        "default": "[[PROJECT_ROOT]]/etc/cert.pem",
+        "description": ""
+      },
+      "Connect/Disconnect Timeout": {
+        "default": 10,
+        "description": ""
+      },
+      "IoT Root CA Location": {
+        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem",
+        "description": ""
+      },
+      "MQTT Host": {
+        "default": "127.0.0.1",
+        "description": ""
+      },
+      "MQTT Port": {
+        "default": 8883,
+        "description": ""
+      },
+      "Private Key Path": {
+        "default": "[[PROJECT_ROOT]]/etc/private_key.pem",
+        "description": ""
+      },
+      "Topic": {
+        "description": ""
+      },
+      "Use Websockets": {
+        "description": ""
       }
-    }
+    },
+    "Version": "1.0.0"
+  },
+  "nio/GreenGrassShadowDelete": {
+    "Commands": {},
+    "Dependencies": [],
+    "Description": "",
+    "Input": "",
+    "Output": "",
+    "Properties": {
+      "AWS Credentials": {
+        "default": {
+          "access_key_id": "",
+          "secret_key": ""
+        },
+        "description": ""
+      },
+      "Certificate Path": {
+        "default": "[[PROJECT_ROOT]]/etc/cert.pem",
+        "description": ""
+      },
+      "Connect/Disconnect Timeout": {
+        "default": 10,
+        "description": ""
+      },
+      "Data to delete": {
+        "default": "{{ $.to_dict() }}",
+        "description": ""
+      },
+      "IoT Root CA Location": {
+        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem",
+        "description": ""
+      },
+      "MQTT Host": {
+        "default": "127.0.0.1",
+        "description": ""
+      },
+      "MQTT Port": {
+        "default": 8883,
+        "description": ""
+      },
+      "Persistent Subscription": {
+        "default": true,
+        "description": ""
+      },
+      "Private Key Path": {
+        "default": "[[PROJECT_ROOT]]/etc/private_key.pem",
+        "description": ""
+      },
+      "Thing name": {
+        "description": ""
+      },
+      "Use Websockets": {
+        "description": ""
+      }
+    },
+    "Version": "0.1.0"
+  },
+  "nio/GreenGrassShadowDeltaListener": {
+    "Commands": {},
+    "Dependencies": [],
+    "Description": "",
+    "Input": "",
+    "Output": "",
+    "Properties": {
+      "AWS Credentials": {
+        "default": {
+          "access_key_id": "",
+          "secret_key": ""
+        },
+        "description": ""
+      },
+      "Certificate Path": {
+        "default": "[[PROJECT_ROOT]]/etc/cert.pem",
+        "description": ""
+      },
+      "Connect/Disconnect Timeout": {
+        "default": 10,
+        "description": ""
+      },
+      "IoT Root CA Location": {
+        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem",
+        "description": ""
+      },
+      "MQTT Host": {
+        "default": "127.0.0.1",
+        "description": ""
+      },
+      "MQTT Port": {
+        "default": 8883,
+        "description": ""
+      },
+      "Persistent Subscription": {
+        "default": true,
+        "description": ""
+      },
+      "Private Key Path": {
+        "default": "[[PROJECT_ROOT]]/etc/private_key.pem",
+        "description": ""
+      },
+      "Thing name": {
+        "description": ""
+      },
+      "Use Websockets": {
+        "description": ""
+      }
+    },
+    "Version": "0.1.0"
+  },
+  "nio/GreenGrassShadowUpdate": {
+    "Commands": {},
+    "Dependencies": [],
+    "Description": "",
+    "Input": "",
+    "Output": "",
+    "Properties": {
+      "AWS Credentials": {
+        "default": {
+          "access_key_id": "",
+          "secret_key": ""
+        },
+        "description": ""
+      },
+      "Certificate Path": {
+        "default": "[[PROJECT_ROOT]]/etc/cert.pem",
+        "description": ""
+      },
+      "Connect/Disconnect Timeout": {
+        "default": 10,
+        "description": ""
+      },
+      "Data to update": {
+        "default": "{{ $.to_dict() }}",
+        "description": ""
+      },
+      "IoT Root CA Location": {
+        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem",
+        "description": ""
+      },
+      "MQTT Host": {
+        "default": "127.0.0.1",
+        "description": ""
+      },
+      "MQTT Port": {
+        "default": 8883,
+        "description": ""
+      },
+      "Persistent Subscription": {
+        "default": true,
+        "description": ""
+      },
+      "Private Key Path": {
+        "default": "[[PROJECT_ROOT]]/etc/private_key.pem",
+        "description": ""
+      },
+      "Thing name": {
+        "description": ""
+      },
+      "Use Websockets": {
+        "description": ""
+      }
+    },
+    "Version": "0.1.0"
   }
 }
