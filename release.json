@@ -1,7 +1,7 @@
 {
-  "namespace/BlockName": {
+  "nio/AWS_IoT": {
     "Language": "Python",
-    "Reference": "github.com/nio-blocks/greengrass@v1.0.0",
+    "Reference": "github.com/nio-blocks/AWS_IoT@v1.0.0",
     "Version": "1.0.0"
   }
 }

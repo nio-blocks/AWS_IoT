@@ -1,12 +1,12 @@
 from nio.properties import VersionProperty, StringProperty
 from nio.util.discovery import discoverable
 from nio.signal.base import Signal
-from .greengrass_mqtt_base_block import GreenGrassMQTTBase
+from .aws_iot_mqtt_base_block import AWSIoTMQTTBase
 
 
 @discoverable
-class GreenGrassMQTTSubscribe(GreenGrassMQTTBase):
-    """A subscriber block for the MQTT protocol that is used by greengrass.
+class AWSIoTMQTTSubscribe(AWSIoTMQTTBase):
+    """A subscriber block for the MQTT protocol that is used by AWS IoT.
     This block will grab messages from a certain topic and notify them."""
 
     version = VersionProperty('1.0.0')

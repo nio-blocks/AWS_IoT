@@ -17,9 +17,9 @@ class AuthCreds(PropertyHolder):
 
 
 @not_discoverable
-class GreenGrassMQTTBase(Block):
-    """The base block for Greengrass. This block is responsible for connecting
-    to the local greengrass core via MQTT."""
+class AWSIoTMQTTBase(Block):
+    """The base block for AWS IoT. This block is responsible for connecting
+    to the cloud broker via MQTT."""
 
     version = VersionProperty('1.0.0')
     creds = ObjectProperty(AuthCreds, title="AWS Credentials",

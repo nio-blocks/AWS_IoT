@@ -4,16 +4,16 @@ from nio.block.terminals import DEFAULT_TERMINAL
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio.signal.base import Signal
 
-from ..greengrass_mqtt_base_block import GreenGrassMQTTBase
-from ..greengrass_mqtt_subscribe_block import GreenGrassMQTTSubscribe
-from ..greengrass_mqtt_publish_block import GreenGrassMQTTPublish
+from ..aws_iot_mqtt_base_block import AWSIoTMQTTBase
+from ..aws_iot_mqtt_subscribe_block import AWSIoTMQTTSubscribe
+from ..aws_iot_mqtt_publish_block import AWSIoTMQTTPublish
 
 
 class TestMQTTBase(NIOBlockTestCase):
 
     def test_configure(self):
         """Signals pass through block unmodified."""
-        blk = GreenGrassMQTTBase()
+        blk = AWSIoTMQTTBase()
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {})
             blk.start()
@@ -27,7 +27,7 @@ class TestMQTTSubscribe(NIOBlockTestCase):
 
     def test_subscribe(self):
         """Signals pass through block unmodified."""
-        blk = GreenGrassMQTTSubscribe()
+        blk = AWSIoTMQTTSubscribe()
 
         class Message:
             def __init__(self, payload):
@@ -63,7 +63,7 @@ class TestMQTTPublish(NIOBlockTestCase):
 
     def test_process_signals(self):
         """Signals pass through block unmodified."""
-        blk = GreenGrassMQTTPublish()
+        blk = AWSIoTMQTTPublish()
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {"topic": "testtopic"})
             blk.start()
