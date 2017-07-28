@@ -29,7 +29,6 @@ Properties
 - **root_ca_path**(string): Path to AWS IoT Root CA
 - **cert_path**(string):
 - **private_key_path**(string):
-- **client_id**(string): Client id given by greengrass
 - **use_websocket**(bool, hidden): Whether to use websockets. If this is set to `True`, the port used will likely be `443`
 - **connect_timeout**(integer): How long to wait before considering a connection attempt invalid
 - **mqtt_host**(string): Host location for the greengrass core
