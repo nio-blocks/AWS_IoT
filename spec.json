@@ -1,100 +1,18 @@
 {
   "nio/AWSIoTMQTTPublish": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "AWS Credentials": {
-        "default": {
-          "access_key_id": "",
-          "secret_key": ""
-        },
-        "description": ""
-      },
-      "Certificate Path": {
-        "default": "[[PROJECT_ROOT]]/etc/cert.pem",
-        "description": ""
-      },
-      "Connect/Disconnect Timeout": {
-        "default": 10,
-        "description": ""
-      },
-      "Data to Publish": {
-        "default": "{{ $text }}",
-        "description": ""
-      },
-      "IoT Root CA Location": {
-        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem",
-        "description": ""
-      },
-      "MQTT Host": {
-        "default": "127.0.0.1",
-        "description": ""
-      },
-      "MQTT Port": {
-        "default": 8883,
-        "description": ""
-      },
-      "Private Key Path": {
-        "default": "[[PROJECT_ROOT]]/etc/private_key.pem",
-        "description": ""
-      },
-      "Topic": {
-        "description": ""
-      },
-      "Use Websockets": {
-        "description": ""
-      }
-    },
-    "Version": "1.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   },
   "nio/AWSIoTMQTTSubscribe": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "AWS Credentials": {
-        "default": {
-          "access_key_id": "",
-          "secret_key": ""
-        },
-        "description": ""
-      },
-      "Certificate Path": {
-        "default": "[[PROJECT_ROOT]]/etc/cert.pem",
-        "description": ""
-      },
-      "Connect/Disconnect Timeout": {
-        "default": 10,
-        "description": ""
-      },
-      "IoT Root CA Location": {
-        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem",
-        "description": ""
-      },
-      "MQTT Host": {
-        "default": "127.0.0.1",
-        "description": ""
-      },
-      "MQTT Port": {
-        "default": 8883,
-        "description": ""
-      },
-      "Private Key Path": {
-        "default": "[[PROJECT_ROOT]]/etc/private_key.pem",
-        "description": ""
-      },
-      "Topic": {
-        "description": ""
-      },
-      "Use Websockets": {
-        "description": ""
-      }
-    },
-    "Version": "1.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   }
 }
