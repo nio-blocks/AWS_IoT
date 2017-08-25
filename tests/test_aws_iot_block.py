@@ -3,6 +3,7 @@ from unittest.mock import patch
 from nio.block.terminals import DEFAULT_TERMINAL
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio.signal.base import Signal
+from nio import Block
 
 from ..aws_iot_mqtt_base_block import AWSIoTMQTTBase
 from ..aws_iot_mqtt_subscribe_block import AWSIoTMQTTSubscribe
@@ -13,7 +14,11 @@ class TestMQTTBase(NIOBlockTestCase):
 
     def test_configure(self):
         """Signals pass through block unmodified."""
-        blk = AWSIoTMQTTBase()
+
+        class AWSIoTMQTT(AWSIoTMQTTBase, Block):
+            pass
+
+        blk = AWSIoTMQTT()
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {})
             blk.start()
