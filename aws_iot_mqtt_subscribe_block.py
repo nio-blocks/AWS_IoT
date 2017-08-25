@@ -1,11 +1,12 @@
 from nio.properties import VersionProperty, StringProperty
 from nio.util.discovery import discoverable
 from nio.signal.base import Signal
+from nio import GeneratorBlock
 from .aws_iot_mqtt_base_block import AWSIoTMQTTBase
 
 
 @discoverable
-class AWSIoTMQTTSubscribe(AWSIoTMQTTBase):
+class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
     """A subscriber block for the MQTT protocol that is used by AWS IoT.
     This block will grab messages from a certain topic and notify them."""
 

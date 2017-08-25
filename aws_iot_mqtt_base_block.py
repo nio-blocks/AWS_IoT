@@ -2,7 +2,6 @@ from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 from uuid import uuid4
 from copy import deepcopy
 
-from nio.block.base import Block
 from nio.properties import (VersionProperty, StringProperty, PropertyHolder,
                             ObjectProperty, FileProperty, BoolProperty,
                             IntProperty)
@@ -17,7 +16,7 @@ class AuthCreds(PropertyHolder):
 
 
 @not_discoverable
-class AWSIoTMQTTBase(Block):
+class AWSIoTMQTTBase(object):
     """The base block for AWS IoT. This block is responsible for connecting
     to the cloud broker via MQTT."""
 
