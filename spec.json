@@ -1,24 +1,154 @@
 {
   "nio/AWSIoTMQTTPublish": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "1.0.0",
+    "description": "Block to publish to AWS IoT's cloud broker.",
     "categories": [
       "Communication"
     ],
-    "properties": {},
-    "inputs": {},
+    "properties": {
+      "cert_path": {
+        "title": "Certificate Path",
+        "type": "FileType",
+        "description": "Path to file containing certifications.",
+        "default": "[[PROJECT_ROOT]]/etc/cert.pem"
+      },
+      "connect_timeout": {
+        "title": "Connect/Disconnect Timeout",
+        "type": "IntType",
+        "description": "How long to wait before considering a connection attempt invalid.",
+        "default": 10
+      },
+      "creds": {
+        "title": "AWS Credentials",
+        "type": "ObjectType",
+        "description": "AWS access credentials.",
+        "default": {
+          "access_key_id": "",
+          "secret_key": ""
+        }
+      },
+      "data_to_publish": {
+        "title": "Data to Publish",
+        "type": "Type",
+        "description": "Message to send over an MQTT topic.",
+        "default": "{{ $text }}"
+      },
+      "mqtt_host": {
+        "title": "MQTT Host",
+        "type": "StringType",
+        "description": "Host location for the broker.",
+        "default": "127.0.0.1"
+      },
+      "mqtt_port": {
+        "title": "MQTT Port",
+        "type": "IntType",
+        "description": "Port for the broker.",
+        "default": 8883
+      },
+      "private_key_path": {
+        "title": "Private Key Path",
+        "type": "FileType",
+        "description": "Path to file containing AWS private key",
+        "default": "[[PROJECT_ROOT]]/etc/private_key.pem"
+      },
+      "root_ca_path": {
+        "title": "IoT Root CA Location",
+        "type": "FileType",
+        "description": "File path to AWS IoT Root CA.",
+        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem"
+      },
+      "topic": {
+        "title": "Topic",
+        "type": "StringType",
+        "description": "MQTT topic to publish to.",
+        "default": null
+      },
+      "use_websocket": {
+        "title": "Use Websockets",
+        "type": "BoolType",
+        "description": "Whether to use websockets. If this is set to `True`, the port used will likely be `443`.",
+        "default": false
+      }
+    },
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
     "outputs": {},
     "commands": {}
   },
   "nio/AWSIoTMQTTSubscribe": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "1.0.0",
+    "description": "Block to subscribe to AWS IoT's cloud broker.",
     "categories": [
       "Communication"
     ],
-    "properties": {},
+    "properties": {
+      "cert_path": {
+        "title": "Certificate Path",
+        "type": "FileType",
+        "description": "Path to file containing certifications.",
+        "default": "[[PROJECT_ROOT]]/etc/cert.pem"
+      },
+      "connect_timeout": {
+        "title": "Connect/Disconnect Timeout",
+        "type": "IntType",
+        "description": "How long to wait before considering a connection attempt invalid.",
+        "default": 10
+      },
+      "creds": {
+        "title": "AWS Credentials",
+        "type": "ObjectType",
+        "description": "AWS access credentials.",
+        "default": {
+          "access_key_id": "",
+          "secret_key": ""
+        }
+      },
+      "mqtt_host": {
+        "title": "MQTT Host",
+        "type": "StringType",
+        "description": "Host location for the broker.",
+        "default": "127.0.0.1"
+      },
+      "mqtt_port": {
+        "title": "MQTT Port",
+        "type": "IntType",
+        "description": "Port for the broker.",
+        "default": 8883
+      },
+      "private_key_path": {
+        "title": "Private Key Path",
+        "type": "FileType",
+        "description": "Path to file containing AWS private key",
+        "default": "[[PROJECT_ROOT]]/etc/private_key.pem"
+      },
+      "root_ca_path": {
+        "title": "IoT Root CA Location",
+        "type": "FileType",
+        "description": "File path to AWS IoT Root CA.",
+        "default": "[[PROJECT_ROOT]]/etc/root_ca.pem"
+      },
+      "topic": {
+        "title": "Topic",
+        "type": "StringType",
+        "description": "MQTT topic to subscribe to.",
+        "default": null
+      },
+      "use_websocket": {
+        "title": "Use Websockets",
+        "type": "BoolType",
+        "description": "Whether to use websockets. If this is set to `True`, the port used will likely be `443`.",
+        "default": false
+      }
+    },
     "inputs": {},
-    "outputs": {},
+    "outputs": {
+      "default": {
+        "description": "Messages received from an MQTT topic."
+      }
+    },
     "commands": {}
   }
 }
