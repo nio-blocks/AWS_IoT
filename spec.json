@@ -2,17 +2,23 @@
   "nio/AWSIoTMQTTPublish": {
     "version": "0.0.1",
     "description": "",
+    "categories": [
+      "Communication"
+    ],
+    "properties": {},
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   },
   "nio/AWSIoTMQTTSubscribe": {
     "version": "0.0.1",
     "description": "",
+    "categories": [
+      "Communication"
+    ],
+    "properties": {},
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   }
 }
