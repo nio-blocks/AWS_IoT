@@ -2,6 +2,9 @@
   "nio/AWSIoTMQTTPublish": {
     "version": "1.0.0",
     "description": "Block to publish to AWS IoT's cloud broker.",
+    "categories": [
+      "Communication"
+    ],
     "properties": {
       "cert_path": {
         "title": "Certificate Path",
@@ -78,6 +81,9 @@
   "nio/AWSIoTMQTTSubscribe": {
     "version": "1.0.0",
     "description": "Block to subscribe to AWS IoT's cloud broker.",
+    "categories": [
+      "Communication"
+    ],
     "properties": {
       "cert_path": {
         "title": "Certificate Path",
