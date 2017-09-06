@@ -1,11 +1,9 @@
 from nio.properties import VersionProperty, StringProperty
-from nio.util.discovery import discoverable
 from nio.signal.base import Signal
 from nio import GeneratorBlock
 from .aws_iot_mqtt_base_block import AWSIoTMQTTBase
 
 
-@discoverable
 class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
     """A subscriber block for the MQTT protocol that is used by AWS IoT.
     This block will grab messages from a certain topic and notify them."""
@@ -31,8 +29,10 @@ class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
             self.logger.info("Unsubscribed from topic `{}`"
                              .format(self.topic()))
         else:
-            self.logger.error("Could not unsubscribe from topic `{}`, returned "
-                              "{}".format(self.topic(), response))
+            self.logger.error(
+                "Could not unsubscribe from topic `{}`, returned {}".format(
+                    self.topic(), response)
+            )
         super().stop()
 
     def _handle_message(self, client, userdata, message):
