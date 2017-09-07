@@ -7,7 +7,7 @@ class AWSIoTMQTTPublish(AWSIoTMQTTBase, TerminatorBlock):
     """A publisher block for the MQTT protocol that is used by AWS IoT.
     This block will publish messages to a topic."""
 
-    version = VersionProperty('1.0.0')
+    version = VersionProperty("1.0.0")
     topic = StringProperty(title="Topic", allow_none=False)
     data_to_publish = Property(title="Data to Publish", default="{{ $text }}")
 
