@@ -8,7 +8,7 @@ class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
     """A subscriber block for the MQTT protocol that is used by AWS IoT.
     This block will grab messages from a certain topic and notify them."""
 
-    version = VersionProperty('1.0.0')
+    version = VersionProperty("1.0.0")
     topic = StringProperty(title="Topic", allow_none=False)
 
     def start(self):
