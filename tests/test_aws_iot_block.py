@@ -1,3 +1,4 @@
+import json
 from unittest.mock import patch
 
 from nio.block.terminals import DEFAULT_TERMINAL
@@ -8,6 +9,7 @@ from nio import Block
 from ..aws_iot_mqtt_base_block import AWSIoTMQTTBase
 from ..aws_iot_mqtt_subscribe_block import AWSIoTMQTTSubscribe
 from ..aws_iot_mqtt_publish_block import AWSIoTMQTTPublish
+from ..aws_iot_update_shadow_block import AWSIoTUpdateShadow
 
 
 class TestMQTTBase(NIOBlockTestCase):
@@ -81,3 +83,23 @@ class TestMQTTPublish(NIOBlockTestCase):
             )
 
         self.assert_num_signals_notified(0)
+
+class TestUpdateShadow(NIOBlockTestCase):
+
+    def test_update(self):
+        """ The device's shadow is updated with the reported state"""
+        blk = AWSIoTUpdateShadow()
+        data = {"text": "hello"}
+        with patch.object(blk, "client") as patched_client:
+            self.configure_block(blk, {"thing_name": "SomeNeatThing"})
+            blk.start()
+            blk.process_signals([Signal(data)])
+            blk.stop()
+            test_client = patched_client.return_value
+            test_shadow = test_client.createShadowHandlerWithName.return_value
+            test_client.createShadowHandlerWithName.assert_called_once_with(
+                "SomeNeatThing", isPersistentSubscribe=True)
+            test_client.configureOfflinePublishQueueing.assert_not_called()
+            test_client.configureDrainingFrequency.assert_not_called()
+            test_shadow.shadowUpdate.assert_called_once_with(
+                json.dumps({'state': {'reported': data}}), blk._callback, 5)

@@ -63,11 +63,7 @@ class AWSIoTMQTTBase(object):
                 KeyPath=self.private_key_path().file,
                 CertificatePath=self.cert_path().file)
 
-        self.client.configureOfflinePublishQueueing(queueSize=-1)
-        self.client.configureConnectDisconnectTimeout(self.connect_timeout())
-        self.client.configureDrainingFrequency(2)
-        self.client.configureMQTTOperationTimeout(5)
-        self.client.configureAutoReconnectBackoffTime(1, 32, 20)
+        self.configure_connection()
 
         self.connect()
 
@@ -82,3 +78,10 @@ class AWSIoTMQTTBase(object):
     def disconnect(self):
         self.logger.debug("Disconnecting...")
         self.client.disconnect()
+
+    def configure_connection(self):
+        self.client.configureOfflinePublishQueueing(queueSize=-1)
+        self.client.configureConnectDisconnectTimeout(self.connect_timeout())
+        self.client.configureDrainingFrequency(2)
+        self.client.configureMQTTOperationTimeout(5)
+        self.client.configureAutoReconnectBackoffTime(1, 32, 20)
