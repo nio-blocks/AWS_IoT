@@ -1,5 +1,4 @@
 import json
-from copy import deepcopy
 from nio.properties import VersionProperty, StringProperty, Property
 from nio import TerminatorBlock
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
@@ -17,7 +16,7 @@ class AWSIoTUpdateShadow(AWSIoTMQTTBase, TerminatorBlock):
 
     def __init__(self):
         super().__init__()
-        self.client = deepcopy(AWSIoTMQTTShadowClient)
+        self.client = AWSIoTMQTTShadowClient
         self.shadow = None
 
     def configure(self, context):

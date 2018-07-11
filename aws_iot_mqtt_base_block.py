@@ -1,6 +1,5 @@
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 from uuid import uuid4
-from copy import deepcopy
 
 from nio.properties import (StringProperty, PropertyHolder,
                             ObjectProperty, FileProperty, BoolProperty,
@@ -37,7 +36,7 @@ class AWSIoTMQTTBase(object):
     mqtt_port = IntProperty(title="MQTT Port", default=8883)
 
     def __init__(self):
-        self.client = deepcopy(AWSIoTMQTTClient)
+        self.client = AWSIoTMQTTClient
         super().__init__()
 
     def configure(self, context):
