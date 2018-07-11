@@ -104,7 +104,9 @@ class TestUpdateShadow(NIOBlockTestCase):
             test_client.configureOfflinePublishQueueing.assert_not_called()
             test_client.configureDrainingFrequency.assert_not_called()
             test_shadow.shadowUpdate.assert_called_once_with(
-                json.dumps({'state': {'reported': self.data}}), blk._callback, 5)
+                json.dumps({'state': {'reported': self.data}}),
+                blk._callback,
+                5)
 
     def test_rejected_update(self):
         """ An update has been rejected and an error is logged"""
