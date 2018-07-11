@@ -1,12 +1,17 @@
 {
   "nio/AWSIoTMQTTPublish": {
     "language": "Python",
-    "version": "1.0.0",
-    "url": "git://github.com/nio-blocks/AWS_IoT.git"
+    "url": "git://github.com/nio-blocks/AWS_IoT.git",
+    "version": "1.0.0"
   },
   "nio/AWSIoTMQTTSubscribe": {
     "language": "Python",
-    "version": "1.0.0",
-    "url": "git://github.com/nio-blocks/AWS_IoT.git"
+    "url": "git://github.com/nio-blocks/AWS_IoT.git",
+    "version": "1.0.0"
+  },
+  "nio/AWSIoTUpdateShadow": {
+    "language": "Python",
+    "url": "git://github.com/nio-blocks/AWS_IoT.git",
+    "version": "1.0.0"
   }
 }

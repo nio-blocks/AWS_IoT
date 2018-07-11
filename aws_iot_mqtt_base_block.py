@@ -1,6 +1,5 @@
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 from uuid import uuid4
-from copy import deepcopy
 
 from nio.properties import (StringProperty, PropertyHolder,
                             ObjectProperty, FileProperty, BoolProperty,
@@ -37,7 +36,7 @@ class AWSIoTMQTTBase(object):
     mqtt_port = IntProperty(title="MQTT Port", default=8883)
 
     def __init__(self):
-        self.client = deepcopy(AWSIoTMQTTClient)
+        self.client = AWSIoTMQTTClient
         super().__init__()
 
     def configure(self, context):
@@ -63,11 +62,7 @@ class AWSIoTMQTTBase(object):
                 KeyPath=self.private_key_path().file,
                 CertificatePath=self.cert_path().file)
 
-        self.client.configureOfflinePublishQueueing(queueSize=-1)
-        self.client.configureConnectDisconnectTimeout(self.connect_timeout())
-        self.client.configureDrainingFrequency(2)
-        self.client.configureMQTTOperationTimeout(5)
-        self.client.configureAutoReconnectBackoffTime(1, 32, 20)
+        self.configure_connection()
 
         self.connect()
 
@@ -82,3 +77,10 @@ class AWSIoTMQTTBase(object):
     def disconnect(self):
         self.logger.debug("Disconnecting...")
         self.client.disconnect()
+
+    def configure_connection(self):
+        self.client.configureOfflinePublishQueueing(queueSize=-1)
+        self.client.configureConnectDisconnectTimeout(self.connect_timeout())
+        self.client.configureDrainingFrequency(2)
+        self.client.configureMQTTOperationTimeout(5)
+        self.client.configureAutoReconnectBackoffTime(1, 32, 20)
