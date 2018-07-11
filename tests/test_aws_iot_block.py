@@ -89,16 +89,17 @@ class TestUpdateShadow(NIOBlockTestCase):
     def test_update(self):
         """ The device's shadow is updated with the reported state"""
         blk = AWSIoTUpdateShadow()
+        thing_name = "SomeNeatThing"
         data = {"text": "hello"}
         with patch.object(blk, "client") as patched_client:
-            self.configure_block(blk, {"thing_name": "SomeNeatThing"})
+            self.configure_block(blk, {"thing_name": thing_name})
             blk.start()
             blk.process_signals([Signal(data)])
             blk.stop()
             test_client = patched_client.return_value
             test_shadow = test_client.createShadowHandlerWithName.return_value
             test_client.createShadowHandlerWithName.assert_called_once_with(
-                "SomeNeatThing", isPersistentSubscribe=True)
+                thing_name, isPersistentSubscribe=True)
             test_client.configureOfflinePublishQueueing.assert_not_called()
             test_client.configureDrainingFrequency.assert_not_called()
             test_shadow.shadowUpdate.assert_called_once_with(
