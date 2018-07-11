@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from nio.block.terminals import DEFAULT_TERMINAL
 from nio.testing.block_test_case import NIOBlockTestCase
@@ -86,21 +86,44 @@ class TestMQTTPublish(NIOBlockTestCase):
 
 class TestUpdateShadow(NIOBlockTestCase):
 
+    thing_name = "SomeNeatThing"
+    data = {"text": "hello"}
+
     def test_update(self):
         """ The device's shadow is updated with the reported state"""
         blk = AWSIoTUpdateShadow()
-        thing_name = "SomeNeatThing"
-        data = {"text": "hello"}
         with patch.object(blk, "client") as patched_client:
-            self.configure_block(blk, {"thing_name": thing_name})
-            blk.start()
-            blk.process_signals([Signal(data)])
-            blk.stop()
             test_client = patched_client.return_value
             test_shadow = test_client.createShadowHandlerWithName.return_value
+            self.configure_block(blk, {"thing_name": self.thing_name})
+            blk.start()
+            blk.process_signals([Signal(self.data)])
+            blk.stop()
             test_client.createShadowHandlerWithName.assert_called_once_with(
-                thing_name, isPersistentSubscribe=True)
+                self.thing_name, isPersistentSubscribe=True)
             test_client.configureOfflinePublishQueueing.assert_not_called()
             test_client.configureDrainingFrequency.assert_not_called()
             test_shadow.shadowUpdate.assert_called_once_with(
-                json.dumps({'state': {'reported': data}}), blk._callback, 5)
+                json.dumps({'state': {'reported': self.data}}), blk._callback, 5)
+
+    def test_rejected_update(self):
+        """ An update has been rejected and an error is logged"""
+        status = 'rejected'
+        token = 'abc-123'
+        def dummy_update(payload, cb, to):
+            blk._callback(payload, status, token)
+
+        blk = AWSIoTUpdateShadow()
+        with patch.object(blk, "client") as patched_client:
+            test_client = patched_client.return_value
+            test_shadow = test_client.createShadowHandlerWithName.return_value
+            test_shadow.shadowUpdate.side_effect = dummy_update
+            self.configure_block(blk, {"thing_name": self.thing_name})
+            blk.logger = MagicMock()
+            blk.start()
+            blk.process_signals([Signal(self.data)])
+            expected_payload = json.dumps(
+                {'state': {'reported': self.data}})
+            blk.logger.error.assert_called_once_with(
+                '{} Update returned status \'{}\', payload: {}'.format(
+                    token, status, expected_payload))
