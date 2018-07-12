@@ -9,7 +9,7 @@ from .aws_iot_mqtt_base_block import AWSIoTMQTTBase
 class AWSIoTUpdateShadow(AWSIoTMQTTBase, TerminatorBlock):
     """Update a device's shadow document with a reported state."""
 
-    version = VersionProperty('1.0.0')
+    version = VersionProperty("1.0.1")
     thing_name = StringProperty(title='Thing Name')
     reported_state = Property(
         title='Reported State', default='{{ $.to_dict() }}')
