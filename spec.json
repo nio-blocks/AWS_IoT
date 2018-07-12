@@ -154,7 +154,9 @@
   "nio/AWSIoTUpdateShadow": {
     "version": "1.0.0",
     "description": "Creates a device's shadow if it doesn't exist, and updates the contents of a device's shadow with the **Reported State** provided.",
-    "categories": [],
+    "categories": [
+      "Communication"
+    ],
     "properties": {
       "cert_path": {
         "title": "Certificate Path",

@@ -95,3 +95,7 @@ None
 Commands
 --------
 None
+
+Dependencies
+------------
+AWSIoTPythonSDK
