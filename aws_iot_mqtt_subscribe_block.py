@@ -39,6 +39,9 @@ class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
     def _handle_message(self, client, userdata, message):
         # client and userdata params are deprecated and passed None
         self.logger.debug("Received message on topic {}".format(message.topic))
-        payload = json.loads(message.payload.decode())
+        try:
+            payload = json.loads(message.payload.decode())
+        except json.decoder.JSONDecodeError:
+            payload = message.payload.decode()
         self.notify_signals([Signal({"payload": payload,
                                      "topic": message.topic})])

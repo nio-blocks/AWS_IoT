@@ -43,10 +43,12 @@ class TestMQTTSubscribe(NIOBlockTestCase):
 
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {"topic": "testtopic"})
-            message = Message(payload=b"[\"test message\"]")
+            message_0 = Message(payload=b"{\"foo\": \"bar\"}")
+            message_1 = Message(payload=b"arbitrary")
             blk.start()
             # first two args to callback are deprecated and passed None
-            blk._handle_message(client=None, userdata=None, message=message)
+            blk._handle_message(None, None, message_0)
+            blk._handle_message(None, None, message_1)
             blk.stop()
             patched_client.return_value.subscribe.assert_called_with(
                 topic=blk.topic(),
@@ -56,10 +58,13 @@ class TestMQTTSubscribe(NIOBlockTestCase):
             patched_client.return_value.unsubscribe.assert_called_with(
                 blk.topic()
             )
-        self.assert_num_signals_notified(1)
+        self.assert_num_signals_notified(2)
         self.assertDictEqual(
             self.last_notified[DEFAULT_TERMINAL][0].to_dict(),
-            {"payload": "test message", "topic": blk.topic()})
+            {"payload": {"foo": "bar"}, "topic": blk.topic()})
+        self.assertDictEqual(
+            self.last_notified[DEFAULT_TERMINAL][1].to_dict(),
+            {"payload": "arbitrary", "topic": blk.topic()})
 
 
 class TestMQTTPublish(NIOBlockTestCase):
