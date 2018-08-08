@@ -44,7 +44,7 @@ class TestMQTTSubscribe(NIOBlockTestCase):
 
         with patch.object(blk, "client") as patched_client:
             self.configure_block(blk, {"topic": "testtopic"})
-            message = Message(payload="test message")
+            message = Message(payload=b"[\"test message\"]")
             blk.start()
             blk._handle_message(client=message, userdata="",
                                 message=message)

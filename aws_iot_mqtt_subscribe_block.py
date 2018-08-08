@@ -1,3 +1,4 @@
+import json
 from nio.properties import VersionProperty, StringProperty
 from nio.signal.base import Signal
 from nio import GeneratorBlock
@@ -44,7 +45,8 @@ class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
             self.logger.warning("Received message intended for different "
                                 "client({}).".format(client._client_id))
 
+        payload = json.loads(message.payload.decode())
         self.notify_signals([Signal({"client": client,
                                      "userdata": userdata,
-                                     "payload": message.payload,
+                                     "payload": payload,
                                      "topic": message.topic})])
