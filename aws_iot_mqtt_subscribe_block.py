@@ -36,15 +36,7 @@ class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
         super().stop()
 
     def _handle_message(self, client, userdata, message):
-        self.logger.debug("Received message for client '{}' on topic '{}': "
-                          "{}".format(client._client_id, message.topic,
-                                      message.payload))
-
-        if self.client._mqttCore.getClientID() != client._client_id:
-            self.logger.warning("Received message intended for different "
-                                "client({}).".format(client._client_id))
-
-        self.notify_signals([Signal({"client": client,
-                                     "userdata": userdata,
-                                     "payload": message.payload,
+        # client and userdata params are deprecated and passed None
+        self.logger.debug("Received message on topic {}".format(message.topic))
+        self.notify_signals([Signal({"payload": message.payload,
                                      "topic": message.topic})])
