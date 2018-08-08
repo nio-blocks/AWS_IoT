@@ -46,8 +46,8 @@ class TestMQTTSubscribe(NIOBlockTestCase):
             self.configure_block(blk, {"topic": "testtopic"})
             message = Message(payload="test message")
             blk.start()
-            blk._handle_message(client=message, userdata="",
-                                message=message)
+            # first two args to callback are deprecated and passed None
+            blk._handle_message(client=None, userdata=None, message=message)
             blk.stop()
             patched_client.return_value.subscribe.assert_called_with(
                 topic=blk.topic(),
@@ -60,8 +60,8 @@ class TestMQTTSubscribe(NIOBlockTestCase):
         self.assert_num_signals_notified(1)
         self.assertDictEqual(
             self.last_notified[DEFAULT_TERMINAL][0].to_dict(),
-            {"client": message,
-             "userdata": "",
+            {"client": None,
+             "userdata": None,
              "payload": "test message",
              "topic": blk.topic()})
 
