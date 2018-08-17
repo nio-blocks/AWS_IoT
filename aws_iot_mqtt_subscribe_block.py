@@ -8,7 +8,7 @@ from .aws_iot_mqtt_base_block import AWSIoTMQTTBase
 # JSONDecodeError is raised in py3.5+
 try:
     json_decode_error = json.JSONDecodeError
-except:
+except (ImportError, AttributeError):
     json_decode_error = ValueError
 
 class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
