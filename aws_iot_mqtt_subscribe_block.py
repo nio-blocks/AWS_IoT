@@ -5,6 +5,12 @@ from nio import GeneratorBlock
 from .aws_iot_mqtt_base_block import AWSIoTMQTTBase
 
 
+# JSONDecodeError is raised in py3.5+
+try:
+    json_decode_error = json.JSONDecodeError
+except (ImportError, AttributeError):
+    json_decode_error = ValueError
+
 class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
     """A subscriber block for the MQTT protocol that is used by AWS IoT.
     This block will grab messages from a certain topic and notify them."""
@@ -41,7 +47,7 @@ class AWSIoTMQTTSubscribe(AWSIoTMQTTBase, GeneratorBlock):
         self.logger.debug("Received message on topic {}".format(message.topic))
         try:
             payload = json.loads(message.payload.decode())
-        except json.decoder.JSONDecodeError:
+        except json_decode_error:
             payload = message.payload.decode()
         self.notify_signals([Signal({"payload": payload,
                                      "topic": message.topic})])
